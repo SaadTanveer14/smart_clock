@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:smart_clock/Controller/MatchesController.dart';
+import 'package:smart_clock/Controller/PlayerMatchesController.dart';
 import 'package:smart_clock/utils/Colors.dart';
 
 class Matches extends StatefulWidget {
-  const Matches({super.key});
+  final String screen;
+  const Matches({super.key, required this.screen});
 
   @override
   State<Matches> createState() => _MatchesState();
@@ -14,131 +17,511 @@ class Matches extends StatefulWidget {
 
 class _MatchesState extends State<Matches> {
   MatchesController matchesController = Get.put(MatchesController());
+  PlayerMatchesController playerMatchesController = Get.put(PlayerMatchesController());
 
+  
   @override
   Widget build(BuildContext context) {
+    var orientation = MediaQuery.of(context).orientation;
     matchesController.getMatches();
-    return SafeArea(
+    playerMatchesController.getMatches();
+    return  widget.screen == "tablet"?
+    Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        height: (orientation==Orientation.portrait)? 0.7.sh : 0.54.sh,
+        decoration: CustomColor.boxDecoration,
+        child: Stack(
+          children: [
+
+            Column(
+              children: [
+                Text(
+                  "MATCHES",
+                    style: GoogleFonts.bebasNeue(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                    fontSize: 15.sp,
+                    height: 0
+                  ),
+                ), 
+            
+                  
+                Obx(()=>
+                  matchesController.matchtype.value == false?
+                  Obx(() =>
+                    matchesController.matchesModel!=null || matchesController.matchesModel.value.searchResult!.isNotEmpty?
+                    Expanded(
+                      child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: matchesController.matchesModel.value.searchResult?.length ?? 0,
+                      itemBuilder: (BuildContext context, int index) { 
+                          DateTime datetime = DateFormat("EEEE, dd/MM/yyyy - hh:mm a Z").parse(matchesController.matchesModel.value.searchResult![index].upcomingMatch?.time ?? "Sunday, 00/00/0000 - 00:00 AM +0700");
+                          String date = DateFormat("hh:mm a Z", 'en_US').format(datetime).replaceAllMapped(RegExp(r'(\d+:\d+)'), (Match m) => m[1]!.padLeft(5, '0'));
+                          String time = DateFormat("EEEE, dd/MM/yyyy", 'en_US').format(datetime).replaceAllMapped(RegExp(r'(\d+:\d+)'), (Match m) => m[1]!.padLeft(5, '0'));
+
+                          return  
+                          matchesController.matchesModel.value.searchResult![index].upcomingMatch!=null?
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: (
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                                  border: Border.all(
+                                    width: 2,
+                                    color: CustomColor.lightgreyColor
+                                  ),
+                                  gradient: const LinearGradient(
+                                    colors: [CustomColor.darkgreyColor, CustomColor.lightgreyColor],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Container(
+                                              width: 0.10.sw,
+                                              child: Text(
+                                                matchesController.matchesModel.value.searchResult![index].upcomingMatch?.home! ?? matchesController.matchesModel.value.searchResult![index].upcomingMatch.runtimeType.toString(),
+                                                  style: GoogleFonts.bebasNeue(
+                                                  fontWeight: FontWeight.w500,
+                                                  color: CustomColor.textPinkColor,
+                                                  fontSize: 10.sp,
+                                                  
+                                                ),
+                                                  textAlign: TextAlign.center,
+                              
+                                              ),
+                                            ),
+                                            Column(
+                                              children: [
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    color: CustomColor.lightgreyColor,
+                                                    shape: BoxShape.circle
+                                                  ),
+                                                  child: Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Icon(Icons.notifications, color: Colors.white,),
+                                                )),
+                                                Text(date, style: GoogleFonts.bebasNeue(fontSize:24.sp, color: CustomColor.textGoldenDarkColor),),
+                                                Text(time, style: GoogleFonts.bebasNeue(fontSize:14.sp, color: CustomColor.textGoldenDarkColor),),                                              ],
+                                            ),
+                                            Container(
+                                              width: 0.10.sw,
+                                              child: Text(
+                                              
+                                                  matchesController.matchesModel.value.searchResult![index].upcomingMatch?.away! ?? "",
+                                                  style: GoogleFonts.bebasNeue(
+                                                  fontWeight: FontWeight.w500,
+                                                  color: CustomColor.textPinkColor,
+                                                  fontSize: 10.sp,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                              
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Text(matchesController.matchesModel.value.searchResult![index].upcomingMatch?.label! ?? "", style: GoogleFonts.bebasNeue(fontSize:9.sp, color: CustomColor.textGoldenLightColor),overflow: TextOverflow.fade,),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ),
+                          )
+                          :
+                          const SizedBox();
+                        },    
+                      ),
+                    )
+                    :
+                    const SizedBox(),
+                  )
+                  :
+                  Obx(() =>
+                    playerMatchesController.playersModel!=null || playerMatchesController.playersModel.value.searchResult!.isNotEmpty?
+                    Expanded(
+                      child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: playerMatchesController.playersModel.value.searchResult?.length ?? 0,
+                      itemBuilder: (BuildContext context, int index) { 
+                          DateTime datetime = DateFormat("EEEE, dd/MM/yyyy - hh:mm a Z").parse(playerMatchesController.playersModel.value.searchResult![index].upcomingMatch?.time ?? "Sunday, 00/00/0000 - 00:00 AM +0700");
+                          String date = DateFormat("hh:mm a Z", 'en_US').format(datetime).replaceAllMapped(RegExp(r'(\d+:\d+)'), (Match m) => m[1]!.padLeft(5, '0'));
+                          String time = DateFormat("EEEE, dd/MM/yyyy", 'en_US').format(datetime).replaceAllMapped(RegExp(r'(\d+:\d+)'), (Match m) => m[1]!.padLeft(5, '0'));
+
+                          return  
+                          playerMatchesController.playersModel.value.searchResult?[index].upcomingMatch!=null?
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: (
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                                  border: Border.all(
+                                    width: 2,
+                                    color: CustomColor.lightgreyColor
+                                  ),
+                                  gradient: const LinearGradient(
+                                    colors: [CustomColor.darkgreyColor, CustomColor.lightgreyColor],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Container(
+                                              width: 0.10.sw,
+                                              child: Text(
+                                                playerMatchesController.playersModel.value.searchResult![index].upcomingMatch?.home! ?? matchesController.matchesModel.value.searchResult![index].upcomingMatch.runtimeType.toString(),
+                                                  style: GoogleFonts.bebasNeue(
+                                                  fontWeight: FontWeight.w500,
+                                                  color: CustomColor.textPinkColor,
+                                                  fontSize: 10.sp,
+                                                  
+                                                ),
+                                                  textAlign: TextAlign.center,
+                              
+                                              ),
+                                            ),
+                                            Column(
+                                              children: [
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    color: CustomColor.lightgreyColor,
+                                                    shape: BoxShape.circle
+                                                  ),
+                                                  child: Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Icon(Icons.notifications, color: Colors.white,),
+                                                )),
+                                                
+                                                Text(date, style: GoogleFonts.bebasNeue(fontSize:24.sp, color: CustomColor.textGoldenDarkColor),),
+                                                Text(time, style: GoogleFonts.bebasNeue(fontSize:14.sp, color: CustomColor.textGoldenDarkColor),),                                                  ],
+                                            ),
+                                            Container(
+                                              width: 0.10.sw,
+                                              child: Text(
+                                              
+                                                  playerMatchesController.playersModel.value.searchResult![index].upcomingMatch?.away! ?? "",
+                                                  style: GoogleFonts.bebasNeue(
+                                                  fontWeight: FontWeight.w500,
+                                                  color: CustomColor.textPinkColor,
+                                                  fontSize: 10.sp,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                              
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Text(playerMatchesController.playersModel.value.searchResult![index].upcomingMatch?.label! ?? "", style: GoogleFonts.bebasNeue(fontSize:9.sp, color: CustomColor.textGoldenLightColor),overflow: TextOverflow.fade,),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ),
+                          )
+                          :
+                          const SizedBox();
+                        },
+                      ),
+                    )
+                    :
+                    const SizedBox(),
+                  ),
+                ),
+              ],
+            ),
+            Obx(() =>
+              matchesController.matchtype.value == false ?
+                Positioned(top: 10, left: 10, child: GestureDetector(onTap:(){ matchesController.matchtype.value = true; } ,child: const Icon(Icons.group, color: CustomColor.textGoldenDarkColor,)))
+              :
+                Positioned(top: 10, left: 10, child: GestureDetector(onTap:(){ matchesController.matchtype.value = false; } ,child: const Icon(Icons.person, color: CustomColor.textGoldenDarkColor,))),
+            )
+          ],
+        ),
+      ),
+    )
+    :
+    SafeArea(
       child: Scaffold(
         backgroundColor: CustomColor.backgroundColor,
         body: 
-            Column(
+            Stack(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Text(
-                    "MATCHES",
-                      style: GoogleFonts.bebasNeue(
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                      fontSize: 30.sp,
-                      height: 0
-                    ),
-                  ),
-                ), 
-
-                  
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: Text(
+                        "MATCHES",
+                          style: GoogleFonts.bebasNeue(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                          fontSize: 30.sp,
+                          height: 0
+                        ),
+                      ),
+                    ), 
                 
-                Obx(() =>
-                  matchesController.matchesModel!=null || matchesController.matchesModel.value.searchResult!.isNotEmpty?
-                  Expanded(
-                    child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: matchesController.matchesModel.value.searchResult?.length ?? 0,
-                    itemBuilder: (BuildContext context, int index) { 
-                        return  
-                        matchesController.matchesModel.value.searchResult![index].upcomingMatch!=null?
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: (
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(10.r)),
-                                border: Border.all(
-                                  width: 2,
-                                  color: CustomColor.lightgreyColor
-                                ),
-                                gradient: const LinearGradient(
-                                  colors: [CustomColor.darkgreyColor, CustomColor.lightgreyColor],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: SizedBox(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Container(
-                                            width: 0.28.sw,
-                                            child: Text(
-                                              matchesController.matchesModel.value.searchResult![index].upcomingMatch?.home! ?? matchesController.matchesModel.value.searchResult![index].upcomingMatch.runtimeType.toString(),
-                                                style: GoogleFonts.bebasNeue(
-                                                fontWeight: FontWeight.w500,
-                                                color: CustomColor.textPinkColor,
-                                                fontSize: 20.sp,
-                                                
-                                              ),
-                                                textAlign: TextAlign.center,
+                      
+                    
+                    Obx(()=>
+                      matchesController.matchtype.value == false?
+                      Obx(() =>
+                        matchesController.matchesModel!=null || matchesController.matchesModel.value.searchResult!.isNotEmpty?
+                        Expanded(
+                          child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: matchesController.matchesModel.value.searchResult?.length ?? 0,
+                          itemBuilder: (BuildContext context, int index) { 
+                              DateTime datetime = DateFormat("EEEE, dd/MM/yyyy - hh:mm a Z").parse(matchesController.matchesModel.value.searchResult![index].upcomingMatch?.time ?? "Sunday, 00/00/0000 - 00:00 AM +0700");
+                              String date = DateFormat("hh:mm a Z", 'en_US').format(datetime).replaceAllMapped(RegExp(r'(\d+:\d+)'), (Match m) => m[1]!.padLeft(5, '0'));
+                              String time = DateFormat("EEEE, dd/MM/yyyy", 'en_US').format(datetime).replaceAllMapped(RegExp(r'(\d+:\d+)'), (Match m) => m[1]!.padLeft(5, '0'));
 
-                                            ),
-                                          ),
-                                          Column(
-                                            children: [
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  color: CustomColor.lightgreyColor,
-                                                  shape: BoxShape.circle
-                                                ),
-                                                child: Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Icon(Icons.notifications, color: Colors.white,),
-                                              )),
-                                              Text("17:00", style: GoogleFonts.bebasNeue(fontSize:24.sp, color: CustomColor.textGoldenDarkColor),),
-                                              Text(matchesController.matchesModel.value.searchResult![index].upcomingMatch?.label! ?? "", style: GoogleFonts.bebasNeue(fontSize:18.sp, color: CustomColor.textGoldenLightColor),),
-                                            ],
-                                          ),
-                                          Container(
-                                            width: 0.28.sw,
-                                            child: Text(
-                                            
-                                                matchesController.matchesModel.value.searchResult![index].upcomingMatch?.away! ?? "",
-                                                style: GoogleFonts.bebasNeue(
-                                                fontWeight: FontWeight.w500,
-                                                color: CustomColor.textPinkColor,
-                                                fontSize: 20.sp,
-                                              ),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                            
-                                        ],
+                              return  
+                              matchesController.matchesModel.value.searchResult![index].upcomingMatch!=null?
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: (
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                                      border: Border.all(
+                                        width: 2,
+                                        color: CustomColor.lightgreyColor
                                       ),
-                                    ],
-                                  ),
+                                      gradient: const LinearGradient(
+                                        colors: [CustomColor.darkgreyColor, CustomColor.lightgreyColor],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: SizedBox(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Container(
+                                                  width: 0.28.sw,
+                                                  child: Text(
+                                                    matchesController.matchesModel.value.searchResult![index].upcomingMatch?.home! ?? matchesController.matchesModel.value.searchResult![index].upcomingMatch.runtimeType.toString(),
+                                                      style: GoogleFonts.bebasNeue(
+                                                      fontWeight: FontWeight.w500,
+                                                      color: CustomColor.textPinkColor,
+                                                      fontSize: 20.sp,
+                                                    ),
+                                                      textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                                Column(
+                                                  children: [
+                                                    Container(
+                                                      decoration: BoxDecoration(
+                                                        color: CustomColor.lightgreyColor,
+                                                        shape: BoxShape.circle
+                                                      ),
+                                                      child: Padding(
+                                                      padding: const EdgeInsets.all(8.0),
+                                                      child: Icon(Icons.notifications, color: Colors.white,),
+                                                    )),
+                                                    Text(date, style: GoogleFonts.bebasNeue(fontSize:24.sp, color: CustomColor.textGoldenDarkColor),),
+                                                    Text(time, style: GoogleFonts.bebasNeue(fontSize:14.sp, color: CustomColor.textGoldenDarkColor),),
+
+                                                  ],
+                                                ),
+                                                Container(
+                                                  width: 0.28.sw,
+                                                  child: Text(
+                                                      matchesController.matchesModel.value.searchResult![index].upcomingMatch?.away! ?? "",
+                                                      style: GoogleFonts.bebasNeue(
+                                                      fontWeight: FontWeight.w500,
+                                                      color: CustomColor.textPinkColor,
+                                                      fontSize: 20.sp,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Text(matchesController.matchesModel.value.searchResult![index].upcomingMatch?.label! ?? "", style: GoogleFonts.bebasNeue(fontSize:18.sp, color: CustomColor.textGoldenLightColor),overflow: TextOverflow.fade,),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  )
                                 ),
-                              ),
-                            )
-                          ),
+                              )
+                              :
+                              const SizedBox();
+                           
+                           
+                          },
+                                  
+                                      ),
                         )
                         :
-                        const SizedBox();
-                     
-                     
-                    },
-                            
+                        const SizedBox(),
+                      )
+                      :
+                      Obx(() =>
+                        playerMatchesController.playersModel!=null || playerMatchesController.playersModel.value.searchResult!.isNotEmpty?
+                        Expanded(
+                          child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: playerMatchesController.playersModel.value.searchResult?.length ?? 0,
+                          itemBuilder: (BuildContext context, int index) { 
+                              DateTime datetime = DateFormat("EEEE, dd/MM/yyyy - hh:mm a Z").parse(playerMatchesController.playersModel.value.searchResult![index].upcomingMatch?.time ?? "Sunday, 00/00/0000 - 00:00 AM +0700");
+                              String date = DateFormat("hh:mm a Z", 'en_US').format(datetime).replaceAllMapped(RegExp(r'(\d+:\d+)'), (Match m) => m[1]!.padLeft(5, '0'));
+                              String time = DateFormat("EEEE, dd/MM/yyyy", 'en_US').format(datetime).replaceAllMapped(RegExp(r'(\d+:\d+)'), (Match m) => m[1]!.padLeft(5, '0'));
+
+                              return  
+                              playerMatchesController.playersModel.value.searchResult![index].upcomingMatch!=null?
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: (
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                                      border: Border.all(
+                                        width: 2,
+                                        color: CustomColor.lightgreyColor
+                                      ),
+                                      gradient: const LinearGradient(
+                                        colors: [CustomColor.darkgreyColor, CustomColor.lightgreyColor],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: SizedBox(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Container(
+                                                  width: 0.28.sw,
+                                                  child: Text(
+                                                    playerMatchesController.playersModel.value.searchResult![index].upcomingMatch?.home! ?? matchesController.matchesModel.value.searchResult![index].upcomingMatch.runtimeType.toString(),
+                                                      style: GoogleFonts.bebasNeue(
+                                                      fontWeight: FontWeight.w500,
+                                                      color: CustomColor.textPinkColor,
+                                                      fontSize: 20.sp,
+                                                    ),
+                                                      textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                                Column(
+                                                  children: [
+                                                    Container(
+                                                      decoration: BoxDecoration(
+                                                        color: CustomColor.lightgreyColor,
+                                                        shape: BoxShape.circle
+                                                      ),
+                                                      child: Padding(
+                                                      padding: const EdgeInsets.all(8.0),
+                                                      child: Icon(Icons.notifications, color: Colors.white,),
+                                                    )),
+                                                  Text(date, style: GoogleFonts.bebasNeue(fontSize:24.sp, color: CustomColor.textGoldenDarkColor),),
+                                                  Text(time, style: GoogleFonts.bebasNeue(fontSize:14.sp, color: CustomColor.textGoldenDarkColor),),                                                      ],
+                                                ),
+                                                Container(
+                                                  width: 0.28.sw,
+                                                  child: Text(
+                                                      playerMatchesController.playersModel.value.searchResult![index].upcomingMatch?.away! ?? "",
+                                                      style: GoogleFonts.bebasNeue(
+                                                      fontWeight: FontWeight.w500,
+                                                      color: CustomColor.textPinkColor,
+                                                      fontSize: 20.sp,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Text(playerMatchesController.playersModel.value.searchResult![index].upcomingMatch?.label! ?? "", style: GoogleFonts.bebasNeue(fontSize:18.sp, color: CustomColor.textGoldenLightColor),overflow: TextOverflow.fade,),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  )
                                 ),
-                  )
-                  :
-                  const SizedBox(),
+                              )
+                              :
+                              const SizedBox();
+                           
+                           
+                          },
+                                  
+                                      ),
+                        )
+                        :
+                        const SizedBox(),
+                      )
+                    ),
+                  ],
                 ),
+                Obx(() =>
+                  matchesController.matchtype.value == false ?
+                    Positioned(top: 10, left: 10, child: GestureDetector(onTap:(){ matchesController.matchtype.value = true; } ,child: const Icon(Icons.group, color: CustomColor.textGoldenDarkColor,)))
+                  :
+                    Positioned(top: 10, left: 10, child: GestureDetector(onTap:(){ matchesController.matchtype.value = false; } ,child: const Icon(Icons.person, color: CustomColor.textGoldenDarkColor,))),
+                )
               ],
+
             ),
       
       )

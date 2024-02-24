@@ -56,11 +56,12 @@ class _WeatherState extends State<Weather> {
 
   @override
   Widget build(BuildContext context) {
+    var orientation = MediaQuery.of(context).orientation;
     return widget.screen == "tablet"?
     Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        height: 0.48.sh,
+        height: (orientation==Orientation.portrait)? 0.7.sh : 0.54.sh,
         decoration: BoxDecoration(
           // color: Color.fromARGB(255, 150, 134, 133),
           borderRadius: BorderRadius.all(Radius.circular(10.r)),

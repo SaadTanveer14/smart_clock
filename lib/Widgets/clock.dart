@@ -56,9 +56,10 @@ class _ClockState extends State<Clock> {
 
   @override
   Widget build(BuildContext context) {
+    var orientation = MediaQuery.of(context).orientation;
     return  widget.screen == "tablet"?
     Container(
-      height: 0.45.sh,
+      height: (orientation == Orientation.portrait)? 0.25.sh-8: 0.38.sh,
       decoration: BoxDecoration(
         // color: Color.fromARGB(255, 150, 134, 133),
         borderRadius: BorderRadius.all(Radius.circular(10.r)),

@@ -7,11 +7,11 @@ import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:smart_clock/Controller/CustomMatchesController.dart';
 import 'package:smart_clock/Models/Matches_Model.dart';
+import 'package:smart_clock/Models/Player_Model.dart';
 
-class MatchesController extends GetxController{
-    var matchesModel = MatchesModel().obs;
+class PlayerMatchesController extends GetxController{
+    var playersModel = PlayersModel().obs;
     CustomMatchesController customMatchesController = Get.find<CustomMatchesController>();
-    RxBool matchtype = false.obs;
 
     @override
     void onInit()
@@ -21,16 +21,16 @@ class MatchesController extends GetxController{
     }
     Future<void> getMatches() async{
       int status = customMatchesController.preferenceStatus.value;
-      String? team = await customMatchesController.getTeam();
-      String url = "http://149.28.150.230:9991/nextMatch/clubs/arsenal";
+      String? player = await customMatchesController.getPlayer();
+      String url = "http://149.28.150.230:9991/nextMatch/players/Cristiano";
 
       if(status == 1)
       {
-        url = "http://149.28.150.230:9991/nextMatch/clubs/$team";
+        url = "http://149.28.150.230:9991/nextMatch/players/$player";
       }
       else
       {
-        url = "http://149.28.150.230:9991/nextMatch/clubs/arsenal";
+        url = "http://149.28.150.230:9991/nextMatch/players/Cristiano";
       }
 
       try
@@ -40,7 +40,7 @@ class MatchesController extends GetxController{
         {
           final responseBody = response.body;
           var js =jsonDecode(responseBody);
-          matchesModel.value = MatchesModel.fromJson(js);
+          playersModel.value = PlayersModel.fromJson(js);
           if (kDebugMode) {
             print(js);
           }

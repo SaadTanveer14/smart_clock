@@ -21,24 +21,13 @@ class _SportNewsState extends State<SportNews> {
 
   @override
   Widget build(BuildContext context) {
+    var orientation = MediaQuery.of(context).orientation;
     return widget.screen == "tablet"?
     Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        decoration: BoxDecoration(
-          // color: Color.fromARGB(255, 150, 134, 133),
-          borderRadius: BorderRadius.all(Radius.circular(10.r)),
-          border: Border.all(
-            width: 2,
-            color: CustomColor.lightgreyColor
-          ),
-          gradient: const LinearGradient(
-            colors: [CustomColor.darkgreyColor, CustomColor.lightgreyColor],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        height: 0.48.sh,
+        decoration: CustomColor.boxDecoration,
+        height: (orientation==Orientation.portrait)? 0.7.sh : 0.54.sh,
         child: Obx(()=>
             Column(
               children: [
@@ -51,17 +40,45 @@ class _SportNewsState extends State<SportNews> {
                     height: 0
                   ),
                 ), 
+                Obx(() => sportsNewsController.sportsNewsModel.value!=null || sportsNewsController.sportsNewsModel.value.articles!.isNotEmpty ?
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      onChanged: (query) => sportsNewsController.search(query),
+                      style: GoogleFonts.poppins(color: Colors.white),
+                      decoration: InputDecoration(
+                        
+                        hintText: 'Search News',
+                        hintStyle: GoogleFonts.poppins(color: Colors.grey),
+                        focusedBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          gapPadding : 0,
+                          borderSide: BorderSide(
+                            color: CustomColor.primaryColor, // Set your border color
+                          ),
+                        ),
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          gapPadding : 0,
+                  
+                          
+                        ),
+                      ),
+                    ),
+                  ):
+                  const SizedBox(),
+                ),
                 Expanded(
                   child: ListView.builder(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
-                  itemCount: sportsNewsController.sportsNewsModel.value.articles?.length ?? 0,
+                  itemCount: sportsNewsController.filteredNews.length,
                   itemBuilder: (BuildContext context, int index) { 
                     return
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: GestureDetector(
-                        onTap: () async{await _launchUrl(sportsNewsController.sportsNewsModel.value.articles![index].url!);},
+                        onTap: () async{await _launchUrl(sportsNewsController.filteredNews[index].url!);},
                         child: (
                           Container(
                             decoration: BoxDecoration(
@@ -84,7 +101,7 @@ class _SportNewsState extends State<SportNews> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                        sportsNewsController.sportsNewsModel.value.articles![index].title.toString(),
+                                        sportsNewsController.filteredNews[index].title.toString(),
                                         style: GoogleFonts.bebasNeue(
                                           fontWeight: FontWeight.w500,
                                           color: CustomColor.textPinkColor,
@@ -140,7 +157,7 @@ class _SportNewsState extends State<SportNews> {
                       style: GoogleFonts.poppins(color: Colors.white),
                       decoration: InputDecoration(
                         
-                        hintText: 'Type something',
+                        hintText: 'Search News',
                         hintStyle: GoogleFonts.poppins(color: Colors.grey),
                         focusedBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(20)),

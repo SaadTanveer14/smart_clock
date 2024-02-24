@@ -20,6 +20,7 @@ class _CalenderState extends State<Calender> {
 
   @override
   Widget build(BuildContext context) {
+    var orientation = MediaQuery.of(context).orientation;
     final configt = CalendarDatePicker2Config(
       calendarType: CalendarDatePicker2Type.single,
       selectedDayHighlightColor: Colors.indigo,
@@ -27,21 +28,21 @@ class _CalenderState extends State<Calender> {
       dayTextStyle: TextStyle(
         color: CustomColor.textGreenColor,
         fontWeight: FontWeight.bold,
-        fontSize: 6.sp
+        fontSize: (orientation==Orientation.portrait)? 8.sp : 5.sp
       ),
       weekdayLabelTextStyle: TextStyle(
         color: CustomColor.textGreenColor,
-        fontSize: 9.sp,
+        fontSize: (orientation==Orientation.portrait)? 8.sp : 6.sp,
         fontWeight: FontWeight.bold
       ),
       controlsTextStyle: TextStyle(
         color: CustomColor.textGreenColor,
-        fontSize: 8.sp,
+        fontSize:  (orientation==Orientation.portrait)? 8.sp : 5.sp,
         fontWeight: FontWeight.bold
       ),
       selectedDayTextStyle: TextStyle(
         color: CustomColor.textGreenColor,
-        fontSize: 8.sp,
+        fontSize:  (orientation==Orientation.portrait)? 8.sp : 5.sp,
         fontWeight: FontWeight.bold
       ),
     );
@@ -75,8 +76,8 @@ class _CalenderState extends State<Calender> {
     return  widget.screen == "tablet"?
     
     Container(
-      height: 0.35.sh,
-      decoration: BoxDecoration(
+        height: (orientation == Orientation.portrait)? 0.20.sh: 0.3.sh,      
+        decoration: BoxDecoration(
         // color: Color.fromARGB(255, 150, 134, 133),
         borderRadius: BorderRadius.all(Radius.circular(10.r)),
         border: Border.all(
@@ -99,29 +100,32 @@ class _CalenderState extends State<Calender> {
         )
       )
       :
-      Container(
-      height: 0.35.sh,
-      decoration: BoxDecoration(
-        // color: Color.fromARGB(255, 150, 134, 133),
-        borderRadius: BorderRadius.all(Radius.circular(10.r)),
-        border: Border.all(
-          width: 2,
-          color: CustomColor.lightgreyColor
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal:8.0,vertical:4),
+        child: Container(
+        height: 0.35.sh,
+        decoration: BoxDecoration(
+          // color: Color.fromARGB(255, 150, 134, 133),
+          borderRadius: BorderRadius.all(Radius.circular(10.r)),
+          border: Border.all(
+            width: 2,
+            color: CustomColor.lightgreyColor
+          ),
+          gradient: const LinearGradient(
+            colors: [CustomColor.darkgreyColor, CustomColor.lightgreyColor],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
         ),
-        gradient: const LinearGradient(
-          colors: [CustomColor.darkgreyColor, CustomColor.lightgreyColor],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+        child: CalendarDatePicker2(
+            config: configm, 
+            value: _singleDatePickerValueWithDefaultValue,
+          // initialDate: DateTime.now(), 
+          // firstDate: DateTime.utc(2010, 10, 16), 
+          // lastDate: DateTime.utc(2030, 3, 14), 
+          // onDateChanged: (DateTime value) {  },
+          )
         ),
-      ),
-      child: CalendarDatePicker2(
-          config: configm, 
-          value: _singleDatePickerValueWithDefaultValue,
-        // initialDate: DateTime.now(), 
-        // firstDate: DateTime.utc(2010, 10, 16), 
-        // lastDate: DateTime.utc(2030, 3, 14), 
-        // onDateChanged: (DateTime value) {  },
-        )
       );
   }
 }

@@ -30,7 +30,7 @@ class SearchResult {
 
   SearchResult.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    upcomingMatch = json['upcoming_match'] != null
+    upcomingMatch = json['upcoming_match'] != null && json['upcoming_match'] != "No data found"
         ? new UpcomingMatch.fromJson(json['upcoming_match'])
         : null;
   }

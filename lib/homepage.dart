@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:smart_clock/Widgets/calender.dart';
 import 'package:smart_clock/Widgets/clock.dart';
 import 'package:smart_clock/Widgets/lunerCalender.dart';
+import 'package:smart_clock/Widgets/matches.dart';
+import 'package:smart_clock/Widgets/profile.dart';
 import 'package:smart_clock/Widgets/sportsNews.dart';
 import 'package:smart_clock/Widgets/weather.dart';
 import 'package:smart_clock/utils/Colors.dart';
@@ -24,97 +26,106 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: 
         ScreenUtil().screenWidth > 600?
-        Column(
+        Stack(
           children: [
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
               children: [
-                Expanded(child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Clock(screen: "tablet"),
-                )),
-                // Container(color: Colors.white, child: CalendarDatePicker(initialDate: DateTime.now(), firstDate: DateTime.utc(2010, 10, 16), lastDate: DateTime.utc(2030, 3, 14) , onDateChanged: (DateTime value) {  },))
-                Expanded(
-                  child: Column(
-                    children: [
-                      const LunerCalender(),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Calender(screen:"tablet"),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Clock(screen: "tablet"),
+                    )),
+                    // Container(color: Colors.white, child: CalendarDatePicker(initialDate: DateTime.now(), firstDate: DateTime.utc(2010, 10, 16), lastDate: DateTime.utc(2030, 3, 14) , onDateChanged: (DateTime value) {  },))
+                    Expanded(
+                      child: Column(
+                        children: [
+                          const LunerCalender(screen: "mobile"),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Calender(screen:"tablet"),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                )
-                // Clock(),
+                    )
+                    // Clock(),
+                  ],
+                ),
+               
+                  
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(child: Weather(screen:"tablet")),
+                    Expanded(child: Matches(screen: "tablet",)),
+                    Expanded(child: SportNews(screen: "tablet")),
+            
+                  ],
+                ),
+            
+            
               ],
             ),
-           
-      
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(child: Weather(screen:"tablet")),
-                // Expanded(child: Padding(
-                //   padding: const EdgeInsets.all(8.0),
-                //   child: Weather(),
-                // )),
-                // Expanded(child: SportNews())
-                Expanded(child: SportNews(screen: "tablet")),
-
-                Expanded(child: SportNews(screen: "tablet"))
-              ],
-            ),
-
-
+            Positioned(right: 20, top:10, child: GestureDetector(onTap: () => Get.to(()=>const Profile(screen: "tablet",)), child: Icon(Icons.settings, color: Colors.white,size: 20.sp,)))
           ],
         )
         :
-        SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: Text(
-                    "HOME",
-                      style: GoogleFonts.bebasNeue(
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                      fontSize: 30.sp,
-                      height: 0
-                    ),
+        Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: Text(
+                        "HOME",
+                          style: GoogleFonts.bebasNeue(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                          fontSize: 30.sp,
+                          height: 0
+                        ),
+                      ),
+                    ), 
+                  Row(
+                    children: [
+                      Expanded(child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Clock(screen: "mobile"),
+                      )),
+                    ],
                   ),
-                ), 
-              Row(
-                children: [
-                  Expanded(child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Clock(screen: "mobile"),
-                  )),
+                  Row(
+                    children: [
+                      Expanded(child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Weather(screen:"mobile"),
+                      )),
+                    ],
+                  ),
+
+                  
+                  Row(
+                    children: [
+                      Expanded(child: Column(
+                        children: [
+                          const LunerCalender(screen: "mobile"),
+                          Calender(screen:"mobile"),
+                        ],
+                      )),
+                    ],
+                  ),
                 ],
               ),
-              Row(
-                children: [
-                  Expanded(child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Weather(screen:"mobile"),
-                  )),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Calender(screen:"mobile"),
-                  )),
-                ],
-              ),
-              
-            ],
-          ),
+            ),
+            Positioned(right: 20, top:10, child: GestureDetector(onTap: () => Get.to(()=>const Profile(screen: "mobile",)), child: Icon(Icons.settings, color: Colors.white,size: 20.sp,)))
+          ],
         )
       ),
     );
