@@ -9,9 +9,7 @@ import 'package:smart_clock/Widgets/matches.dart';
 import 'package:smart_clock/Widgets/profile.dart';
 import 'package:smart_clock/Widgets/sportsNews.dart';
 import 'package:smart_clock/Widgets/weather.dart';
-import 'package:smart_clock/utils/Colors.dart';
-import 'package:table_calendar/table_calendar.dart';
-import 'package:smart_clock/Controller/SportsNewController.dart';
+import 'package:connectivity/connectivity.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,7 +19,42 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final Connectivity _connectivity = Connectivity();
 
+  @override
+  void initState() {
+    super.initState();
+    _initConnectivity();
+  }
+
+  Future<void> _initConnectivity() async {
+    final ConnectivityResult result = await _connectivity.checkConnectivity();
+    _updateConnectionStatus(result);
+
+    _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+  }
+
+  void _updateConnectionStatus(ConnectivityResult result) {
+    if (result == ConnectivityResult.none) {
+      _showNoInternetSnackbar();
+    }
+  }
+
+  void _showNoInternetSnackbar() {
+    final snackBar = SnackBar(
+      content: Text('No internet connection'),
+      action: SnackBarAction(
+        label: 'OK',
+        onPressed: () {
+          // You can add some action when the user clicks on the "OK" button
+        },
+      ),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -31,30 +64,34 @@ class _HomePageState extends State<HomePage> {
         ScreenUtil().screenWidth > 600?
         Stack(
           children: [
-            Column(
+            const Column(
               children: [
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Clock(screen: "tablet"),
-                    )),
-                    // Container(color: Colors.white, child: CalendarDatePicker(initialDate: DateTime.now(), firstDate: DateTime.utc(2010, 10, 16), lastDate: DateTime.utc(2030, 3, 14) , onDateChanged: (DateTime value) {  },))
-                    Expanded(
-                      child: Column(
-                        children: [
-                          const LunerCalender(screen: "mobile"),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Calender(screen:"tablet"),
-                          ),
-                        ],
-                      ),
-                    )
-                    // Clock(),
-                  ],
+                Expanded(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Clock(screen: "tablet"),
+                      )),
+                      // Container(color: Colors.white, child: CalendarDatePicker(initialDate: DateTime.now(), firstDate: DateTime.utc(2010, 10, 16), lastDate: DateTime.utc(2030, 3, 14) , onDateChanged: (DateTime value) {  },))
+                      Expanded(
+                        child: Column(
+                          children: [
+                            LunerCalender(screen: "tablet"),
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Calender(screen:"tablet"),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                      // Clock(),
+                    ],
+                  ),
                 ),
                
                   
@@ -65,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                     Expanded(child: Weather(screen:"tablet")),
                     Expanded(child: Matches(screen: "tablet",)),
                     Expanded(child: SportNews(screen: "tablet")),
-            
+                            
                   ],
                 ),
             

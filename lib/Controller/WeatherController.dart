@@ -1,18 +1,20 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:smart_clock/Models/Airquality_Model.dart';
 import 'package:smart_clock/Models/Weather_Model.dart';
+import 'package:smart_clock/utils/internetConnectivity.dart';
 
 class WeatherController extends GetxController{
   late var weatherModel = WeatherModel().obs;
   late var airqualityModel = AirqualityModel().obs;
   RxString conditionImage = "assets/weather/weather.png".obs;
-
+  final Connectivity _connectivity = Connectivity();
   @override
   void onInit()
   {
@@ -20,12 +22,16 @@ class WeatherController extends GetxController{
     getWeatherData();
     getAirQualityData();
   }
+  
 
   Future<void> getWeatherData() async{
     Position position = await getLocationPermission();
 
     
-
+    final ConnectivityResult result = await _connectivity.checkConnectivity();
+    if (result == ConnectivityResult.none) {
+      showNoInternetSnackbar();
+    }
     String url = "http://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&appid=244051b761f3bc4b510614ace5464aa5&units=metric";
 
     try
@@ -86,7 +92,10 @@ class WeatherController extends GetxController{
   Future<void> getAirQualityData() async{
     Position position = await getLocationPermission();
     String url = "http://api.openweathermap.org/data/2.5/air_pollution?lat=${position.latitude}lon=${position.longitude}&appid=244051b761f3bc4b510614ace5464aa5";
-
+        final ConnectivityResult result = await _connectivity.checkConnectivity();
+    if (result == ConnectivityResult.none) {
+      showNoInternetSnackbar();
+    }
     try
     {
       var response = await get(Uri.parse(url)).timeout(Duration(seconds: 20));
@@ -125,7 +134,10 @@ class WeatherController extends GetxController{
     bool serviceEnabled;
     LocationPermission permission;
     late Position position;
-
+    final ConnectivityResult result = await _connectivity.checkConnectivity();
+    if (result == ConnectivityResult.none) {
+      showNoInternetSnackbar();
+    }
     if( !( await Geolocator.isLocationServiceEnabled()) ) 
     {
       await Geolocator.openLocationSettings();
@@ -151,5 +163,8 @@ class WeatherController extends GetxController{
     }
     return Position(latitude: 40.69841754657531, longitude: -73.91096079482604, timestamp: DateTime.now(), accuracy: 0, altitude: 0, altitudeAccuracy: 0, heading: 0, headingAccuracy: 0, speed: 0, speedAccuracy: 0);
   }
+  
+  
+
 
 }

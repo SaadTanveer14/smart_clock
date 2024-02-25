@@ -56,10 +56,8 @@ class _ClockState extends State<Clock> {
 
   @override
   Widget build(BuildContext context) {
-    var orientation = MediaQuery.of(context).orientation;
     return  widget.screen == "tablet"?
     Container(
-      height: (orientation == Orientation.portrait)? 0.25.sh-8: 0.38.sh,
       decoration: BoxDecoration(
         // color: Color.fromARGB(255, 150, 134, 133),
         borderRadius: BorderRadius.all(Radius.circular(10.r)),
@@ -86,7 +84,7 @@ class _ClockState extends State<Clock> {
                   style: GoogleFonts.bebasNeue(
                     fontWeight: FontWeight.w500,
                     color: CustomColor.primaryColor,
-                    fontSize: 18.sp,
+                    fontSize: 40.sp,
                     height: 1.5
                   ),
                 ),
@@ -101,7 +99,7 @@ class _ClockState extends State<Clock> {
                   style:GoogleFonts.bebasNeue(
                     fontWeight: FontWeight.w500,
                     color: CustomColor.primaryColor,
-                    fontSize: 40.sp,
+                    fontSize: 150.sp,
                     height: 0.7
         
                   ),
@@ -111,7 +109,7 @@ class _ClockState extends State<Clock> {
                   style:GoogleFonts.bebasNeue(
                     fontWeight: FontWeight.w500,
                     color: CustomColor.primaryColor,
-                    fontSize: 40.sp,
+                    fontSize: 150.sp,
                     height: 0.7
                   ),
                 ),
@@ -120,7 +118,7 @@ class _ClockState extends State<Clock> {
                   style:GoogleFonts.bebasNeue(
                     fontWeight: FontWeight.w500,
                     color: Color(0xFFFB7800),
-                    fontSize: 40.sp,
+                    fontSize: 150.sp,
                     height: 0.7
         
                   ),
@@ -136,7 +134,7 @@ class _ClockState extends State<Clock> {
                       style:GoogleFonts.bebasNeue(
                         fontWeight: FontWeight.w600,
                         color: const Color(0xFFFB7800),
-                        fontSize: 15.sp,
+                        fontSize: 50.sp,
                         height: 0
         
                       ),
@@ -147,7 +145,7 @@ class _ClockState extends State<Clock> {
                       style:GoogleFonts.bebasNeue(
                         fontWeight: FontWeight.w600,
                         color: const Color(0xFFFB7800),
-                        fontSize: 15.sp,
+                        fontSize: 50.sp,
                         height: 0
                       ),
                     ),

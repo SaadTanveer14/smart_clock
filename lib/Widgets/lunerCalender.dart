@@ -23,13 +23,13 @@ class _LunerCalenderState extends State<LunerCalender> {
       child: 
       widget.screen == "tablet"?
       Container(
-        height: (orientation == Orientation.portrait)? 0.04.sh-8: 0.08.sh-8, 
+        height: 0.08.sh-8, 
         decoration: CustomColor.boxDecoration,
         child: Row(
           children: [         
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text("LUNAR DATE: ${_today.hDay} ${_today.longMonthName}, ${_today.hYear}", style: GoogleFonts.bebasNeue(color: CustomColor.textGreenColor, fontSize: 10.sp, fontWeight: FontWeight.w500)),
+              child: Text("LUNAR DATE: ${_today.hDay} ${_today.longMonthName}, ${_today.hYear}", style: GoogleFonts.bebasNeue(color: CustomColor.textGreenColor, fontSize: 30.sp, fontWeight: FontWeight.w500)),
             )
         ]),
       )

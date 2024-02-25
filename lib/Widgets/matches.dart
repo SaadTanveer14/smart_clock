@@ -41,7 +41,7 @@ class _MatchesState extends State<Matches> {
                     style: GoogleFonts.bebasNeue(
                     fontWeight: FontWeight.w500,
                     color: Colors.white,
-                    fontSize: 15.sp,
+                    fontSize: 30.sp,
                     height: 0
                   ),
                 ), 
@@ -90,13 +90,13 @@ class _MatchesState extends State<Matches> {
                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: [
                                             Container(
-                                              width: 0.10.sw,
+                                              // width: 0.10.sw,
                                               child: Text(
                                                 matchesController.matchesModel.value.searchResult![index].upcomingMatch?.home! ?? matchesController.matchesModel.value.searchResult![index].upcomingMatch.runtimeType.toString(),
                                                   style: GoogleFonts.bebasNeue(
                                                   fontWeight: FontWeight.w500,
                                                   color: CustomColor.textPinkColor,
-                                                  fontSize: 10.sp,
+                                                  fontSize: 30.sp,
                                                   
                                                 ),
                                                   textAlign: TextAlign.center,
@@ -118,7 +118,7 @@ class _MatchesState extends State<Matches> {
                                                 Text(time, style: GoogleFonts.bebasNeue(fontSize:14.sp, color: CustomColor.textGoldenDarkColor),),                                              ],
                                             ),
                                             Container(
-                                              width: 0.10.sw,
+                                              // width: 0.10.sw,
                                               child: Text(
                                               
                                                   matchesController.matchesModel.value.searchResult![index].upcomingMatch?.away! ?? "",
@@ -189,27 +189,27 @@ class _MatchesState extends State<Matches> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: SizedBox(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      // crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          // crossAxisAlignment: CrossAxisAlignment.center,
+                                          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            Container(
-                                              width: 0.10.sw,
+                                            Expanded(
                                               child: Text(
                                                 playerMatchesController.playersModel.value.searchResult![index].upcomingMatch?.home! ?? matchesController.matchesModel.value.searchResult![index].upcomingMatch.runtimeType.toString(),
                                                   style: GoogleFonts.bebasNeue(
                                                   fontWeight: FontWeight.w500,
                                                   color: CustomColor.textPinkColor,
-                                                  fontSize: 10.sp,
+                                                  fontSize: 20.sp,
                                                   
                                                 ),
                                                   textAlign: TextAlign.center,
-                              
+                                                                            
                                               ),
                                             ),
                                             Column(
+                                              crossAxisAlignment: CrossAxisAlignment.center,
                                               children: [
                                                 Container(
                                                   decoration: BoxDecoration(
@@ -222,17 +222,17 @@ class _MatchesState extends State<Matches> {
                                                 )),
                                                 
                                                 Text(date, style: GoogleFonts.bebasNeue(fontSize:24.sp, color: CustomColor.textGoldenDarkColor),),
-                                                Text(time, style: GoogleFonts.bebasNeue(fontSize:14.sp, color: CustomColor.textGoldenDarkColor),),                                                  ],
+                                                Text(time, style: GoogleFonts.bebasNeue(fontSize:15.sp, color: CustomColor.textGoldenDarkColor),),                                                  ],
                                             ),
-                                            Container(
-                                              width: 0.10.sw,
+                                            Expanded(
                                               child: Text(
-                                              
-                                                  playerMatchesController.playersModel.value.searchResult![index].upcomingMatch?.away! ?? "",
+                                                  softWrap:true,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  "${playerMatchesController.playersModel.value.searchResult![index].upcomingMatch?.away!} asfsdfa asdfasd adfasdf" ?? "",
                                                   style: GoogleFonts.bebasNeue(
                                                   fontWeight: FontWeight.w500,
                                                   color: CustomColor.textPinkColor,
-                                                  fontSize: 10.sp,
+                                                  fontSize: 20.sp,
                                                 ),
                                                 textAlign: TextAlign.center,
                                               ),
@@ -243,7 +243,7 @@ class _MatchesState extends State<Matches> {
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
-                                            Text(playerMatchesController.playersModel.value.searchResult![index].upcomingMatch?.label! ?? "", style: GoogleFonts.bebasNeue(fontSize:9.sp, color: CustomColor.textGoldenLightColor),overflow: TextOverflow.fade,),
+                                            Text(playerMatchesController.playersModel.value.searchResult![index].upcomingMatch?.label! ?? "", style: GoogleFonts.bebasNeue(fontSize:15.sp, color: CustomColor.textGoldenLightColor),overflow: TextOverflow.fade,),
                                           ],
                                         ),
                                       ],

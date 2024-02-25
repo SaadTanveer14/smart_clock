@@ -94,7 +94,7 @@ class _WeatherState extends State<Weather> {
                         style: GoogleFonts.bebasNeue(
                         fontWeight: FontWeight.w500,
                         color: CustomColor.textBlueColor,
-                        fontSize: 8.sp,
+                        fontSize: 40.sp,
                         height: 0
                       ),
                     ), 
@@ -111,7 +111,7 @@ class _WeatherState extends State<Weather> {
                         style: GoogleFonts.bebasNeue(
                         fontWeight: FontWeight.w500,
                         color: CustomColor.textBlueColor,
-                        fontSize: 40.sp,
+                        fontSize: 150.sp,
                         height: 0
                       ),
                     ), 
@@ -122,7 +122,7 @@ class _WeatherState extends State<Weather> {
                    
       
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       const SizedBox(height:30),
@@ -136,7 +136,7 @@ class _WeatherState extends State<Weather> {
                             style:GoogleFonts.bebasNeue(
                               fontWeight: FontWeight.w500,
                               color: CustomColor.textBlueColor,
-                              fontSize: 15.sp,
+                              fontSize: 50.sp,
                               height: 0.8
                                   
                             ),
@@ -146,7 +146,7 @@ class _WeatherState extends State<Weather> {
                             style:GoogleFonts.bebasNeue(
                               fontWeight: FontWeight.w500,
                               color: CustomColor.textBlueColor,
-                              fontSize: 15.sp,
+                              fontSize: 50.sp,
                               height: 0.8
                             ),
                           ),
@@ -155,7 +155,7 @@ class _WeatherState extends State<Weather> {
                             style:GoogleFonts.bebasNeue(
                               fontWeight: FontWeight.w500,
                               color: CustomColor.textBlueColor,
-                              fontSize: 15.sp,
+                              fontSize: 50.sp,
                               height: 0.8
                             ),
                           ),
@@ -163,10 +163,11 @@ class _WeatherState extends State<Weather> {
                       ),
                       Text(
                         currentDay,
+                        textAlign: TextAlign.center,
                         style: GoogleFonts.bebasNeue(
                           fontWeight: FontWeight.w500,
                           color: CustomColor.textBlueColor,
-                          fontSize: 10.sp,
+                          fontSize: 30.sp,
                           height: 0
       
                         ),
@@ -192,7 +193,7 @@ class _WeatherState extends State<Weather> {
                         style: GoogleFonts.bebasNeue(
                           fontWeight: FontWeight.w500,
                           color: CustomColor.textBlueColor,
-                          fontSize: 15.sp,
+                          fontSize: 50.sp,
                           height: 1
                         ),
                       ),
@@ -201,7 +202,7 @@ class _WeatherState extends State<Weather> {
                         style: GoogleFonts.bebasNeue(
                           fontWeight: FontWeight.w500,
                           color: CustomColor.textBlueColor,
-                          fontSize: 8.sp,
+                          fontSize: 25.sp,
                           height: 1.1
                         ),
                       )
@@ -218,7 +219,7 @@ class _WeatherState extends State<Weather> {
                         style: GoogleFonts.bebasNeue(
                           fontWeight: FontWeight.w500,
                           color: CustomColor.textBlueColor,
-                          fontSize: 15.sp,
+                          fontSize: 50.sp,
                           height: 1
                         ),
                       ),
@@ -226,8 +227,8 @@ class _WeatherState extends State<Weather> {
                         "AIR POLUTION",
                         style: GoogleFonts.bebasNeue(
                           fontWeight: FontWeight.w500,
-                          color: CustomColor.textBlueColor,
-                          fontSize: 8.sp,
+                          color: const Color.fromRGBO(172, 226, 250, 1),
+                          fontSize: 25.sp,
                           height: 1.1
                         ),
                       )

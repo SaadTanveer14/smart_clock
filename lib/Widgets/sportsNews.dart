@@ -36,7 +36,7 @@ class _SportNewsState extends State<SportNews> {
                     style: GoogleFonts.bebasNeue(
                     fontWeight: FontWeight.w500,
                     color: Colors.white,
-                    fontSize: 15.sp,
+                    fontSize: 30.sp,
                     height: 0
                   ),
                 ), 
@@ -105,12 +105,12 @@ class _SportNewsState extends State<SportNews> {
                                         style: GoogleFonts.bebasNeue(
                                           fontWeight: FontWeight.w500,
                                           color: CustomColor.textPinkColor,
-                                          fontSize: 8.sp,
+                                          fontSize: 20.sp,
                                           height: 0
                                         ),
                                       ),
                                           
-                                      Text("Readmore >", style: GoogleFonts.bebasNeue(fontWeight: FontWeight.w500, color: Colors.white, fontSize: 8.sp,),)
+                                      Text("Readmore >", style: GoogleFonts.bebasNeue(fontWeight: FontWeight.w500, color: Colors.white, fontSize: 15.sp,),)
                                   ],
                                 ),
                         

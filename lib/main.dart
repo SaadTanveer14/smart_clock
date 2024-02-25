@@ -24,7 +24,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(CustomMatchesController());
     return ScreenUtilInit(
-      designSize: const Size(360, 690),
+      // designSize: const Size(360, 690),
+      designSize: Size(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height),
       minTextAdapt: true,
       splitScreenMode: true,
       child: Builder(

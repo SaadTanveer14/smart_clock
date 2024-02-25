@@ -28,21 +28,21 @@ class _CalenderState extends State<Calender> {
       dayTextStyle: TextStyle(
         color: CustomColor.textGreenColor,
         fontWeight: FontWeight.bold,
-        fontSize: (orientation==Orientation.portrait)? 8.sp : 5.sp
+        fontSize: (orientation == Orientation.landscape)?20.sp:15.sp
       ),
       weekdayLabelTextStyle: TextStyle(
         color: CustomColor.textGreenColor,
-        fontSize: (orientation==Orientation.portrait)? 8.sp : 6.sp,
+        fontSize: (orientation == Orientation.landscape)?20.sp:15.sp,
         fontWeight: FontWeight.bold
       ),
       controlsTextStyle: TextStyle(
         color: CustomColor.textGreenColor,
-        fontSize:  (orientation==Orientation.portrait)? 8.sp : 5.sp,
+        fontSize: (orientation == Orientation.landscape)?20.sp:15.sp,
         fontWeight: FontWeight.bold
       ),
       selectedDayTextStyle: TextStyle(
         color: CustomColor.textGreenColor,
-        fontSize:  (orientation==Orientation.portrait)? 8.sp : 5.sp,
+        fontSize: (orientation == Orientation.landscape)?20.sp:15.sp,
         fontWeight: FontWeight.bold
       ),
     );
@@ -76,7 +76,7 @@ class _CalenderState extends State<Calender> {
     return  widget.screen == "tablet"?
     
     Container(
-        height: (orientation == Orientation.portrait)? 0.20.sh: 0.3.sh,      
+        height: (orientation == Orientation.portrait)? 0.16.sh: 0.31.sh,      
         decoration: BoxDecoration(
         // color: Color.fromARGB(255, 150, 134, 133),
         borderRadius: BorderRadius.all(Radius.circular(10.r)),

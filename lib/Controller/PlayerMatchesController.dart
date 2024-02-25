@@ -2,17 +2,19 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:smart_clock/Controller/CustomMatchesController.dart';
 import 'package:smart_clock/Models/Matches_Model.dart';
 import 'package:smart_clock/Models/Player_Model.dart';
+import 'package:smart_clock/utils/internetConnectivity.dart';
 
 class PlayerMatchesController extends GetxController{
     var playersModel = PlayersModel().obs;
     CustomMatchesController customMatchesController = Get.find<CustomMatchesController>();
-
+    final Connectivity _connectivity = Connectivity();
     @override
     void onInit()
     {
@@ -20,6 +22,10 @@ class PlayerMatchesController extends GetxController{
       getMatches();
     }
     Future<void> getMatches() async{
+    final ConnectivityResult result = await _connectivity.checkConnectivity();
+      if (result == ConnectivityResult.none) {
+        showNoInternetSnackbar();
+      }
       int status = customMatchesController.preferenceStatus.value;
       String? player = await customMatchesController.getPlayer();
       String url = "http://149.28.150.230:9991/nextMatch/players/Cristiano";
