@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,8 +17,8 @@ class Matches extends StatefulWidget {
 }
 
 class _MatchesState extends State<Matches> {
-  MatchesController matchesController = Get.put(MatchesController());
-  PlayerMatchesController playerMatchesController = Get.put(PlayerMatchesController());
+  MatchesController matchesController = Get.find<MatchesController>();
+  PlayerMatchesController playerMatchesController = Get.find<PlayerMatchesController>();
 
   
   @override
@@ -89,18 +90,25 @@ class _MatchesState extends State<Matches> {
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            Container(
-                                              // width: 0.10.sw,
-                                              child: Text(
-                                                matchesController.matchesModel.value.searchResult![index].upcomingMatch?.home! ?? matchesController.matchesModel.value.searchResult![index].upcomingMatch.runtimeType.toString(),
-                                                  style: GoogleFonts.bebasNeue(
-                                                  fontWeight: FontWeight.w500,
-                                                  color: CustomColor.textPinkColor,
-                                                  fontSize: 30.sp,
-                                                  
+                                            Expanded(
+                                              child: Container(
+                                                // width: 0.10.sw,
+                                                child: Column(
+                                                  children: [
+                                                    Image.network(matchesController.matchesModel.value.searchResult![index].upcomingMatch!.homeImg!, height: 50, width: 50,),
+                                                    Text(
+                                                      matchesController.matchesModel.value.searchResult![index].upcomingMatch?.home! ?? matchesController.matchesModel.value.searchResult![index].upcomingMatch.runtimeType.toString(),
+                                                        style: GoogleFonts.bebasNeue(
+                                                        fontWeight: FontWeight.w500,
+                                                        color: CustomColor.textPinkColor,
+                                                        fontSize: 20.sp,
+                                                        
+                                                      ),
+                                                        textAlign: TextAlign.center,
+                                                                                  
+                                                    ),
+                                                  ],
                                                 ),
-                                                  textAlign: TextAlign.center,
-                              
                                               ),
                                             ),
                                             Column(
@@ -117,17 +125,24 @@ class _MatchesState extends State<Matches> {
                                                 Text(date, style: GoogleFonts.bebasNeue(fontSize:24.sp, color: CustomColor.textGoldenDarkColor),),
                                                 Text(time, style: GoogleFonts.bebasNeue(fontSize:14.sp, color: CustomColor.textGoldenDarkColor),),                                              ],
                                             ),
-                                            Container(
-                                              // width: 0.10.sw,
-                                              child: Text(
-                                              
-                                                  matchesController.matchesModel.value.searchResult![index].upcomingMatch?.away! ?? "",
-                                                  style: GoogleFonts.bebasNeue(
-                                                  fontWeight: FontWeight.w500,
-                                                  color: CustomColor.textPinkColor,
-                                                  fontSize: 10.sp,
+                                            Expanded(
+                                              child: Container(
+                                                child: Column(
+                                                  children: [
+                                                    Image.network(matchesController.matchesModel.value.searchResult![index].upcomingMatch!.awayImg!, height: 50, width: 50,),
+                                                    Text(
+                                                    
+                                                        matchesController.matchesModel.value.searchResult![index].upcomingMatch?.away! ?? "",
+                                                        style: GoogleFonts.bebasNeue(
+                                                        fontWeight: FontWeight.w500,
+                                                        color: CustomColor.textPinkColor,
+                                                        fontSize: 20.sp,
+                                                      ),
+                                                      textAlign: TextAlign.center,
+                                                      overflow: TextOverflow.ellipsis,
+                                                    ),
+                                                  ],
                                                 ),
-                                                textAlign: TextAlign.center,
                                               ),
                                             ),
                                               
@@ -196,16 +211,21 @@ class _MatchesState extends State<Matches> {
                                           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: [
                                             Expanded(
-                                              child: Text(
-                                                playerMatchesController.playersModel.value.searchResult![index].upcomingMatch?.home! ?? matchesController.matchesModel.value.searchResult![index].upcomingMatch.runtimeType.toString(),
-                                                  style: GoogleFonts.bebasNeue(
-                                                  fontWeight: FontWeight.w500,
-                                                  color: CustomColor.textPinkColor,
-                                                  fontSize: 20.sp,
-                                                  
-                                                ),
-                                                  textAlign: TextAlign.center,
-                                                                            
+                                              child: Column(
+                                                children: [
+                                                  Image.network(playerMatchesController.playersModel.value.searchResult![index].upcomingMatch!.homeImg!, height: 50, width: 50,),
+                                                  Text(
+                                                    playerMatchesController.playersModel.value.searchResult![index].upcomingMatch?.home! ?? matchesController.matchesModel.value.searchResult![index].upcomingMatch.runtimeType.toString(),
+                                                      style: GoogleFonts.bebasNeue(
+                                                      fontWeight: FontWeight.w500,
+                                                      color: CustomColor.textPinkColor,
+                                                      fontSize: 20.sp,
+                                                      
+                                                    ),
+                                                      textAlign: TextAlign.center,
+                                                                                
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                             Column(
@@ -225,16 +245,21 @@ class _MatchesState extends State<Matches> {
                                                 Text(time, style: GoogleFonts.bebasNeue(fontSize:15.sp, color: CustomColor.textGoldenDarkColor),),                                                  ],
                                             ),
                                             Expanded(
-                                              child: Text(
-                                                  softWrap:true,
-                                                  overflow: TextOverflow.ellipsis,
-                                                  "${playerMatchesController.playersModel.value.searchResult![index].upcomingMatch?.away!} asfsdfa asdfasd adfasdf" ?? "",
-                                                  style: GoogleFonts.bebasNeue(
-                                                  fontWeight: FontWeight.w500,
-                                                  color: CustomColor.textPinkColor,
-                                                  fontSize: 20.sp,
-                                                ),
-                                                textAlign: TextAlign.center,
+                                              child: Column(
+                                                children: [
+                                                  Image.network(playerMatchesController.playersModel.value.searchResult![index].upcomingMatch!.awayImg!, height: 50, width: 50,),
+                                                  Text(
+                                                      softWrap:true,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      "${playerMatchesController.playersModel.value.searchResult![index].upcomingMatch?.away!} asfsdfa asdfasd adfasdf" ?? "",
+                                                      style: GoogleFonts.bebasNeue(
+                                                      fontWeight: FontWeight.w500,
+                                                      color: CustomColor.textPinkColor,
+                                                      fontSize: 20.sp,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                               
@@ -342,14 +367,19 @@ class _MatchesState extends State<Matches> {
                                               children: [
                                                 Container(
                                                   width: 0.28.sw,
-                                                  child: Text(
-                                                    matchesController.matchesModel.value.searchResult![index].upcomingMatch?.home! ?? matchesController.matchesModel.value.searchResult![index].upcomingMatch.runtimeType.toString(),
-                                                      style: GoogleFonts.bebasNeue(
-                                                      fontWeight: FontWeight.w500,
-                                                      color: CustomColor.textPinkColor,
-                                                      fontSize: 20.sp,
-                                                    ),
-                                                      textAlign: TextAlign.center,
+                                                  child: Column(
+                                                    children: [
+                                                      Image.network(matchesController.matchesModel.value.searchResult![index].upcomingMatch!.homeImg!, height: 50, width: 50,),
+                                                      Text(
+                                                        matchesController.matchesModel.value.searchResult![index].upcomingMatch?.home! ?? matchesController.matchesModel.value.searchResult![index].upcomingMatch.runtimeType.toString(),
+                                                          style: GoogleFonts.bebasNeue(
+                                                          fontWeight: FontWeight.w500,
+                                                          color: CustomColor.textPinkColor,
+                                                          fontSize: 20.sp,
+                                                        ),
+                                                          textAlign: TextAlign.center,
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
                                                 Column(
@@ -365,19 +395,23 @@ class _MatchesState extends State<Matches> {
                                                     )),
                                                     Text(date, style: GoogleFonts.bebasNeue(fontSize:24.sp, color: CustomColor.textGoldenDarkColor),),
                                                     Text(time, style: GoogleFonts.bebasNeue(fontSize:14.sp, color: CustomColor.textGoldenDarkColor),),
-
                                                   ],
                                                 ),
                                                 Container(
                                                   width: 0.28.sw,
-                                                  child: Text(
-                                                      matchesController.matchesModel.value.searchResult![index].upcomingMatch?.away! ?? "",
-                                                      style: GoogleFonts.bebasNeue(
-                                                      fontWeight: FontWeight.w500,
-                                                      color: CustomColor.textPinkColor,
-                                                      fontSize: 20.sp,
-                                                    ),
-                                                    textAlign: TextAlign.center,
+                                                  child: Column(
+                                                    children: [
+                                                      Image.network(matchesController.matchesModel.value.searchResult![index].upcomingMatch!.awayImg!, height: 50, width: 50,),
+                                                      Text(
+                                                          matchesController.matchesModel.value.searchResult![index].upcomingMatch?.away! ?? "",
+                                                          style: GoogleFonts.bebasNeue(
+                                                          fontWeight: FontWeight.w500,
+                                                          color: CustomColor.textPinkColor,
+                                                          fontSize: 20.sp,
+                                                        ),
+                                                        textAlign: TextAlign.center,
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
                                               ],

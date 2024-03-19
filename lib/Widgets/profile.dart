@@ -5,9 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smart_clock/Controller/CustomMatchesController.dart';
+import 'package:smart_clock/Controller/MatchesController.dart';
+import 'package:smart_clock/Controller/PlayerMatchesController.dart';
 import 'package:smart_clock/utils/Colors.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 
 class Profile extends StatefulWidget {
   final String screen;
@@ -21,6 +24,8 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   CustomMatchesController customMatchesController = Get.find<CustomMatchesController>();
   bool _isEditingText = false;
+  PlayerMatchesController controllerPlayers = Get.find<PlayerMatchesController>();
+  MatchesController controllerMatches = Get.find<MatchesController>();
 
   @override
   void initState() {
@@ -98,25 +103,52 @@ class _ProfileState extends State<Profile> {
             customMatchesController.preferenceStatus.value == 1? 
               Padding(
                 padding: const EdgeInsets.symmetric(vertical:30),
-                child: Row(
+                child: Column(
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
                       children: [
-                        Text(
-                          "Add Favourite FootBall Player",
-                            style:GoogleFonts.bebasNeue(
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                              fontSize: (orientation==Orientation.portrait)? 16.sp:10.sp,
-                            ),
-                          ),
-                        
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Add Favourite FootBall Player",
+                                style:GoogleFonts.bebasNeue(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                  fontSize: (orientation==Orientation.portrait)? 16.sp:10.sp,
+                                ),
+                              ),
+                            
+                          ],
+                        ),
+                        const Spacer(),
+                        Container( width: 0.2.sw, child: _editPlayerTextField()),                      
+                    
                       ],
                     ),
-                    const Spacer(),
-                    Container( width: 0.2.sw, child: _editPlayerTextField()),                      
-                
+
+                    Obx(()=>
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: customMatchesController.listOfPlayersObs.length,
+                        itemBuilder: (context, index) {
+                          return Row(
+                            children: [
+                              Text(customMatchesController.listOfPlayersObs[index],style: TextStyle(color:Colors.white),),
+                              Spacer(),
+                              IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () async{
+                                  await customMatchesController.deletePlayer(index);
+                                  await controllerPlayers.getMatches();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),   
+
                   ],
                 ),
               )
@@ -138,29 +170,59 @@ class _ProfileState extends State<Profile> {
               ),
             ),
 
-
             Obx(() => 
                 customMatchesController.preferenceStatus.value == 1? 
 
-                Row(
+                Column(
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
                       children: [
-                        
-                        Text(
-                          "Add Your Favourite Football Team",
-                            style:GoogleFonts.bebasNeue(
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                              fontSize: (orientation==Orientation.portrait)? 16.sp : 10.sp,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            
+                            Text(
+                              "Add Your Favourite Football Team",
+                              style:GoogleFonts.bebasNeue(
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                                fontSize: (orientation==Orientation.portrait)? 16.sp : 10.sp,
+                              ),
                             ),
-                          ),
+                    
+                          ],
+                        ),
+                        const Spacer(),
+                        Obx(()=> Container( width: 0.2.sw, child: _editTeamTextField())),                      
+                    
                       ],
                     ),
-                    const Spacer(),
-                    Obx(()=> Container( width: 0.2.sw, child: _editTeamTextField())),                      
 
+                    Obx(()=>
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: customMatchesController.listOfTeamsObs.length,
+                        itemBuilder: (context, index) {
+                          return Row(
+                            children: [
+                              Text(customMatchesController.listOfTeamsObs[index],style: TextStyle(color:Colors.white),),
+                              Spacer(),
+                              IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () async {
+                                  // Implement logic to delete player from the list
+                                  // e.g., customMatchesController.deleteFavoritePlayer(index);
+                                  await customMatchesController.deleteTeam(index);
+                                  await controllerMatches.getMatches();
+
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                    
                   ],
                 )
                 :
@@ -177,6 +239,9 @@ class _ProfileState extends State<Profile> {
                   ],
                 ),
               ),
+
+
+  
             ],
           )
           :
@@ -316,7 +381,10 @@ class _ProfileState extends State<Profile> {
                   ],
                 ),
               ),
+
+              
             ],
+          
           ),
         ),
       ),
@@ -330,6 +398,7 @@ class _ProfileState extends State<Profile> {
           style: TextStyle(color: Colors.white),
           onSubmitted: (newValue) async{
             await customMatchesController.setPlayer();
+            await customMatchesController.setPlayerNew();
             setState(() {
               // customMatchesController.footballPlayer.value.text = newValue;
               _isEditingText =false;
@@ -365,13 +434,14 @@ class _ProfileState extends State<Profile> {
           style: TextStyle(color: Colors.white),
           onSubmitted: (newValue) async{
             await customMatchesController.setTeam();
+            await customMatchesController.setTeamNew();
             setState(() {
               // customMatchesController.footballPlayer.value.text = newValue;
               _isEditingText =false;
             });
           },
           autofocus: true,
-          controller: customMatchesController.footballTeam.value,
+          controller:customMatchesController.footballTeam.value,
       
       );
     return 

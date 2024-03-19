@@ -29,7 +29,7 @@ class _LunerCalenderState extends State<LunerCalender> {
           children: [         
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text("LUNAR DATE: ${_today.hDay} ${_today.longMonthName}, ${_today.hYear}", style: GoogleFonts.bebasNeue(color: CustomColor.textGreenColor, fontSize: 30.sp, fontWeight: FontWeight.w500)),
+              child: Text("LUNAR DATE: ${_today.hDay}/${_today.hMonth}/${_today.hYear}", style: GoogleFonts.bebasNeue(color: CustomColor.textGreenColor, fontSize: 30.sp, fontWeight: FontWeight.w500)),
             )
         ]),
       )
@@ -40,7 +40,7 @@ class _LunerCalenderState extends State<LunerCalender> {
           children: [         
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text("LUNAR DATE: ${_today.hDay} ${_today.longMonthName}, ${_today.hYear}", style: GoogleFonts.bebasNeue(color: CustomColor.textGreenColor, fontSize: 18.sp, fontWeight: FontWeight.w500)),
+              child: Text("LUNAR DATE: ${_today.hDay}/${_today.hMonth}/${_today.hYear}", style: GoogleFonts.bebasNeue(color: CustomColor.textGreenColor, fontSize: 18.sp, fontWeight: FontWeight.w500)),
             )
         ]),
       )

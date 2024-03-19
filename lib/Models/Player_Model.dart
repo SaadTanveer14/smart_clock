@@ -50,14 +50,18 @@ class UpcomingMatch {
   String? home;
   String? away;
   String? time;
+  String? homeImg;
+  String? awayImg;
 
-  UpcomingMatch({this.label, this.home, this.away, this.time});
+  UpcomingMatch({this.label, this.home, this.away, this.time, this.homeImg, this.awayImg});
 
   UpcomingMatch.fromJson(Map<String, dynamic> json) {
     label = json['label'];
     home = json['home'];
     away = json['away'];
     time = json['time'];
+    homeImg = json['home_img'];
+    awayImg = json['away_img'];
   }
 
   Map<String, dynamic> toJson() {
@@ -66,6 +70,8 @@ class UpcomingMatch {
     data['home'] = this.home;
     data['away'] = this.away;
     data['time'] = this.time;
+    data['home_img'] = this.homeImg;
+    data['away_img'] = this.awayImg;
     return data;
   }
 }

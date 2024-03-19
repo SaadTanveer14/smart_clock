@@ -29,16 +29,16 @@ class MatchesController extends GetxController{
         showNoInternetSnackbar();
       }
       int status = customMatchesController.preferenceStatus.value;
-      String? team = await customMatchesController.getTeam();
-      String url = "http://149.28.150.230:9991/nextMatch/clubs/arsenal";
+      String? team = await customMatchesController.getTeamNew();
+      String url = "http://149.28.150.230:9991/nextMatchNew/clubs/arsenal";
 
-      if(status == 1)
+      if(status == 1 && team!=null && team!="")
       {
-        url = "http://149.28.150.230:9991/nextMatch/clubs/$team";
+        url = "http://149.28.150.230:9991/nextMatchNew/clubs/$team";
       }
       else
       {
-        url = "http://149.28.150.230:9991/nextMatch/clubs/arsenal";
+        url = "http://149.28.150.230:9991/nextMatchNew/clubs/arsenal";
       }
 
       try
